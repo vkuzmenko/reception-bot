@@ -7,6 +7,7 @@ start_keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
 start_keyboard.row('Записаться')
 
 status = 0
+dates = []
 
 #Start chatting with bot 
 @bot.message_handler(commands=['start'])
@@ -18,14 +19,23 @@ def start_message(message):
 @bot.message_handler(content_types=['text'])
 def resolve(message):
     if message.text == 'Записаться':
-        status = 1
         bot.send_message(message.chat.id, "Введите дату начала записи")
     else:
-        check_in(message)
-
+        if dates == []:
+            status = 1 
+            check_in(message, status)
+        else:
+            status = 2
+            check_in(message, status)
 #Base functions 
-def check_in(message):
-    print("We're in check in function")  #TODO time start and end check in 
+def check_in(message, status):
+    if status == 1:
+        print('Start date: {}'.format(message.text))
+    elif: status == 2: 
+        print('End date: {}'.format(message.text))
+
+    
+    #print("We're in check in function")  #TODO time start and end check in 
 
 
 bot.polling()
