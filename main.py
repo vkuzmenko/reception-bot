@@ -34,8 +34,4 @@ def check_in(message, status):
     elif: status == 2: 
         print('End date: {}'.format(message.text))
 
-    
-    #print("We're in check in function")  #TODO time start and end check in 
-
-
 bot.polling()
