@@ -35,4 +35,3 @@ def check_in(message, status):
         print('End date: {}'.format(message.text))
 
 bot.polling()
-
