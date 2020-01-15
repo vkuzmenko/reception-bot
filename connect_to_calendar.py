@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 creds = None
 
@@ -29,7 +29,7 @@ if not creds or not creds.valid:
 service = build('calendar', 'v3', credentials=creds)
 
 
-
+#Get last 10 events in calendar 
 def get_last_10_events():
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     print('Getting the upcoming 10 events')
@@ -42,11 +42,36 @@ def get_last_10_events():
         print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+        return start, event['summary']
 
-def create_event(dates,):
-    pass 
+#Create event 
+def create_event():
+    event = {
+        'summary': 'Appointment',
+        'location': 'Odrex',
+        'description': 'Reception bot for making appointments.',
+        'start': {
+            'dateTime': '2020-01-14T09:00:00-07:00',
+            'timeZone': 'America/Los_Angeles',
+        },
+        'end': {
+            'dateTime': '2020-01-14T17:00:00-07:00',
+            'timeZone': 'America/Los_Angeles',
+        },
+        'attendees': [
+            {'email': 'ghostf987@gmail.com'},
+        ],
+        'reminders': {
+            'useDefault': False,
+            'overrides': [
+            {'method': 'email', 'minutes': 24 * 60},
+            {'method': 'popup', 'minutes': 10},
+            ],
+        },
+    }
+
+    event = service.events().insert(calendarId='primary', body=event).execute()
+    print("Event created: {}".format(event.get('htmlLink')))
 
 
-#if __name__ == '__main__':
-#    get_last_10_events()
+    
