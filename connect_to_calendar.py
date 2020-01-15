@@ -73,4 +73,3 @@ def create_event():
     event = service.events().insert(calendarId='primary', body=event).execute()
     print("Event created: {}".format(event.get('htmlLink')))
  
-    
